@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+	<!-- let the user specify the name of the config file from command line and save the file location in the parameter service -->
+	<arg name = "config" default = "grasp_1_out" />
+	<param name = "bo/config" type = "str" value = "$(find bo_ros)/scripts/configs/$(arg config).yaml" />
+	
+	<include file = "$(find tiago_pouring)/launch/grasping.launch">
+		<arg name = "config" value = "learning" />
+		<arg name="command_args" default="-d $(find tiago_moveit_tutorial)/launch/learning.rviz"/> <!-- this RViz config should be moved to tiago_pouring -->
+		<arg name = "grasping_as_node" value = "false" />
+	</include>
+
+	<node pkg = "tiago_pouring" type = "bo_grasp_eval.py" name = "bo_grasp_eval" required = "true" output = "screen" /> 
+	<node pkg = "bo_ros" type = "bo_node.py" name = "bo_node" required = "true" output = "screen" />
+</launch>

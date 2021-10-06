@@ -1,0 +1,68 @@
+<?xml version='1.0'?>
+<sdf version="1.4">
+  <model name="bottle">
+    <pose>-0.1 -0.07 0 0 0 0</pose>
+    <static>false</static>
+    <link name="link">
+      <inertial>
+        <pose>0.137 0.075 0.10 0 0 0</pose>
+        <mass>0.54</mass>
+        <inertia> <!-- inertias are computed considering the bottle as an hollow cylinder -->
+          <ixx>0.001922</ixx>   
+          <ixy>0.0</ixy>         
+          <ixz>0.0</ixz>       
+          <iyy>0.001922</iyy>       
+          <iyz>0.0</iyz>         
+          <izz>0.000243</izz> 
+        </inertia>
+      </inertial>
+      <collision name="collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/root/tiago_public_ws/src/tiago_pouring/models/bottle3_empty/meshes/model.dae</uri>
+            <scale>0.0254 0.0254 0.0254</scale>
+          </mesh>
+        </geometry>
+        
+        <surface>
+          <contact>
+            <!-- typical acrylic plastic material properties -->
+            <poissons_ratio>0.35</poissons_ratio>
+            <elastic_modulus>3.102640776e+09</elastic_modulus>
+            <ode>
+              <kp>100000</kp>
+              <kd>100</kd>
+              <max_vel>100.0</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <torsional>
+              <coefficient>1.0</coefficient>
+              <use_patch_radius>0</use_patch_radius>
+              <surface_radius>0.01</surface_radius>
+            </torsional>
+          </friction>
+        </surface>
+      </collision>
+      
+      <visual name="visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>/root/tiago_public_ws/src/tiago_pouring/models/bottle3_empty/meshes/model.dae</uri>
+            <scale>0.0254 0.0254 0.0254</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/BlueTransparent</name>
+          </script>
+        </material>
+      </visual>
+
+    </link>
+  </model>
+</sdf>

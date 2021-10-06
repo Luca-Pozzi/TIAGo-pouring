@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <!-- ARGS and PARAMS -->
+  <!-- load the proper config file based on command line input -->
+  <arg name = "config" default = "standard" />
+  <param name = "tiago_grasp/config" type = "str" value = "$(find tiago_pouring)/scripts/config/$(arg config)_config.yaml" />
+  
+  <!-- choose wheter to run the main function of Grasping.py or to just setup the manipulation stack -->
+  <arg name = "grasping_as_node" default = "true" />
+  <!-- Rviz config (i.e. what is displayed by default in Rviz) -->
+  <arg name="command_args" default="-d $(find tiago_moveit_tutorial)/launch/grasping.rviz"/> <!-- this RViz config should be moved to tiago_pouring -->
+  <!-- load yaml file(s) with the recorded movements to play with Playmotion -->
+  <rosparam file = "$(find tiago_pouring)/config/my_movements.yaml" />
+  
+  <!-- NODES -->
+  <!-- setup the Gazebo world if the code is running in simulation -->
+  <group if = "$(eval config == 'simulation')">
+    <include file = "$(find tiago_pouring)/launch/square_lab.launch">
+      <arg name = "tuck_arm" value = "false" />
+      <arg name = "use_moveit_camera" value = "true" />
+      <arg name = "gzpose" value = "-x 3.05 -y 0.0 -z 0.0 -R 0.0 -P 0.0 -Y 0.0" />
+    </include>
+    <node pkg = "topic_tools" type = "throttle" name = "pointcloud_throttler" args = "messages /xtion/depth_registered/points 5 /throttle_filtering_points/filtered_points" />
+  </group>
+
+  <!-- launch rviz with a proper config -->
+  <node name="$(anon rviz)" pkg="rviz" type="rviz" respawn="false" args="$(arg command_args)" output="screen"/>
+
+  <group if = "$(arg grasping_as_node)">
+    <param name = "tiago_grasp/as_node" type = "bool" value = "true" />
+    <!-- look for the object coordinates launch file -->
+    <param name = "tiago_grasp/segmentation_launch_file" type = "str" value = "$(find segmentation)/launch/rgbd_segmentation.launch" />
+    <!-- look for the ArUco detection launch file -->
+    <!--<param name = "tiago_grasp/aruco_launch_file" type = "str" value = "$(find tiago_aruco_demo)/launch/detector.launch" />-->
+    <!-- launch the node that actually makes the robot move -->
+    <node pkg = "tiago_pouring" type = "Grasping.py" name = "grasp_obj" required = "false" output = "screen"/>
+  </group>
+
+  <group unless = "$(arg grasping_as_node)">
+    <param name = "tiago_grasp/as_node" type = "bool" value = "false" />
+    <!-- launch the object coordinates framework -->
+    <arg name = "detection_score_threshold" value = "0.25" if = "$(eval config == 'simulation')" /> <!-- in simulation the object detector struggles to recognize the objects -->
+    <arg name = "detection_score_threshold" value = "0.75" unless = "$(eval config == 'simulation')" />
+    <include file = "$(find segmentation)/launch/rgbd_segmentation.launch">
+      <arg name = "detection_score_threshold" value = "$(arg detection_score_threshold)" />
+    </include>
+  </group>
+
+</launch>

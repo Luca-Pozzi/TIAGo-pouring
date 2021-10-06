@@ -1,0 +1,25 @@
+simulation: false               # true = the code is running in simulation, false = the code is running on the real robot
+learning: false
+look_for: 5                     #[s] the maximum time to wait when looking for the object (defaulted to 5)
+segmentation_launch_file: 'rgbd_segmentation.launch'
+full_setup: true                # if set to true, the 'explore_surroundings' movement is played
+save_results: false
+aruco: false                     # is there any ArUco marker on the object to grasp?
+pictures: false
+open_wide_right: true           # should be set to true if TIAGo is supposed to start with its arm tucked
+pregrasp_strategy: 'oppose_thumb'
+approach_strategy: 'close'      # 'close', 'straight_from_right'
+escape_strategy: 'nearby'         # 'home', 'nearby'
+clear_octomap: false             # clear the octomap at the end of the task (defaulted to False)
+grasp_height: 'lower_third'     # try to grasp the object at the lower third of its height
+radius_at_grasp_height: 0.225
+eef_orientation: [0, 0, 0, 1]   # the orientation of the eef when approaching the object
+# MoveIt! group commander parameters (for arm and arm_torso groups)
+moveit_config:
+# goal_joint_tolerance: 
+  goal_position_tolerance: 0.001
+# goal_tolerance:
+  max_acceleration_scaling_factor: 1.0
+  max_velocity_scaling_factor: 0.2
+  num_planning_attempts: 5
+  planning_time: 5

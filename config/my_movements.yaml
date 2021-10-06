@@ -1,0 +1,67 @@
+play_motion:
+  motions:
+    look_down:
+      joints: [head_1_joint, head_2_joint]
+      points:
+      - positions: [0.0, -0.6]
+        time_from_start: 1.0
+        
+    explore_surroundings:
+      joints: ['head_1_joint', 'head_2_joint']
+      points:
+      - positions: [-1., -0.85]
+        time_from_start: 1.5
+      - positions: [-1., -0.85]
+        time_from_start: 2.0
+      - positions: [1., -0.85]
+        time_from_start: 4.5
+      - positions: [1., -0.85]
+        time_from_start: 5.0
+      - positions: [1., -0.5]
+        time_from_start: 6.0
+      - positions: [1., -0.5]
+        time_from_start: 6.5
+      - positions: [-1., -0.5]
+        time_from_start: 9.0
+      - positions: [-1., -0.5]
+        time_from_start: 9.5
+      - positions: [0., -0.5]
+        time_from_start: 10.5
+      meta:
+        name: explore_surroundings
+        usage: demo
+        description: 'explore_surroundings'
+
+    oppose_thumb:
+      joints: ['hand_index_joint', 'hand_mrl_joint', 'hand_thumb_joint']
+      points:
+      - positions: [0.0, 0.0, 3.0]
+        time_from_start: 1.0
+      - positions: [0.0, 0.0, 2.0]
+        time_from_start: 2.0
+
+    grasp:
+      joints: ['hand_index_joint', 'hand_mrl_joint', 'hand_thumb_joint']
+      points:
+      - positions: [0.0, 0.0, 3.0]
+        time_from_start: 1.0
+      - positions: [0.0, 0.0, 3.0]
+        time_from_start: 1.5
+      - positions: [0.0, 4.0, 3.0]
+        time_from_start: 4.0
+      - positions: [6.8, 6.0, 5.0]
+        time_from_start: 6.0
+
+    spoon:
+      joints: ['hand_index_joint', 'hand_mrl_joint', 'hand_thumb_joint']
+      points:
+      - positions: [0.0, 0.0, 3.0]
+        time_from_start: 1.0
+      - positions: [1.6, 1.6, 1.6]
+        time_from_start: 2.0
+
+#    tighten_grasp:
+#      joints: ['hand_index_joint', 'hand_mrl_joint', 'hand_thumb_joint']
+#      points:
+#      - positions: [6.0, 8.0, 6.0]
+#        time_from_start: 2.5

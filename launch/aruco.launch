@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <!-- ARGS and PARAMS -->
+  <arg name="command_args" value="-d $(find tiago_moveit_tutorial)/launch/grasping.rviz" />
+  <rosparam file = "$(find tiago_pouring)/config/my_movements.yaml" />
+  <rosparam file="$(find tiago_moveit_tutorial)/config/tiago_octomap_motions.yaml" /> <!-- params to play look_around with playmotion -->
+  
+  <!-- NODES -->
+  <!-- launch rviz with a proper config -->
+  <node name="$(anon rviz)" pkg="rviz" type="rviz" respawn="false" args="$(arg command_args)" output="screen"/>
+
+  <include file="$(find tiago_aruco_demo)/launch/detector.launch" >
+  	<arg name = "markerId" value = "582" />
+  	<arg name = "markerSize" value = "0.035" />
+  </include>
+ </launch>

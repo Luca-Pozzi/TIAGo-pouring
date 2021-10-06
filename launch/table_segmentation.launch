@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="rate"                      default="1"                               />
+  <arg name="cloud"                     default="/xtion/depth_registered/points"  />
+  <arg name="frame"                     default="/base_footprint"                 />
+  <arg name="passthrough_axis"          default="z"                               />
+  <arg name="passthrough_min"           default="0.6"                             />
+  <arg name="passthrough_max"           default="1.5"                             />
+  <arg name="downsampling_size"         default="0.01"                            />
+  <arg name="show_rviz"                 default="false"                            />
+
+  <!-- Run a passthrough filter -->
+  <node name="segment_table" pkg="tiago_pcl_tutorial" type="segment_table" output="screen">
+  <remap from="cloud"                     to="$(arg cloud)"     />
+  <param name="rate"                      type="double" value="$(arg rate)"  />
+  <param name="frame"                     type="string" value="$(arg frame)"  />
+  <param name="passthrough_axis"          type="string" value="$(arg passthrough_axis)"  />
+  <param name="passthrough_min"           type="double" value="$(arg passthrough_min)"   />
+  <param name="passthrough_max"           type="double" value="$(arg passthrough_max)"   />
+  <param name="downsampling_size"         type="double" value="$(arg downsampling_size)" />
+  </node>
+
+  <node pkg="nodelet" type="nodelet" name="pcl_manager_plane" args="manager" output="screen" />
+
+  <!-- Run a statistical outlier removal to clean a pointcloud -->
+  <node pkg="nodelet" type="nodelet" name="plane_outlier_removal" args="load pcl/StatisticalOutlierRemoval pcl_manager_plane" output="screen">
+    <remap from="~input" to="/segment_table/plane" />
+    <rosparam>
+      mean_k: 100       <!-- The number of points (k) to use for mean distance estimation Range: 2 to 100  -->
+      stddev: 0.5       <!-- The standard deviation multiplier threshold. All points outside the mean +- sigma * std_mul will be considered outliers. Range: 0.0 to 5.0  -->
+      negative: false   <!-- Set whether the inliers should be returned (true) or the outliers (false) -->
+                      <!-- the above line comes from ros.org, but the behavior seems to be the opposite -->
+    </rosparam>
+  </node>
+</launch>
