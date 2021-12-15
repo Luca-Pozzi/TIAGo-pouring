@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-# make the robot grasp a certain object
+# read the output of a node performing ArUco segmentation and average the info received in a certain time interval
+# to add robustness
 
 # ROS libs
 import tf
@@ -207,4 +208,4 @@ if __name__ == "__main__":
         rospy.loginfo('Inclination: ' + str(tilt * 180 / math.pi) + ' degrees.\nDisplacement: ' + str(lift))
         
     except KeyboardInterrupt:
-        rospy.logwarn('Shutting down the grasping node')
+        rospy.logwarn('Shutting down the pose estimation node')

@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+e<?xml version="1.0"?>
 <launch>
   <arg name="rate"                      default="1"                               />
   <arg name="cloud"                     default="/xtion/depth_registered/points"  />
