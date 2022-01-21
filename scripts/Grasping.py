@@ -304,15 +304,17 @@ class Grasping:
         # and add them to the MoveIt! planning scene.
         # obj_class:    [string] the class of the object to look for (as returned by the segmentation algorithm)
         ##########
-        # in case there is something attached from the previous execution
+         # launch the nodes for vision (if needed)
+        segmentation_launch_file = rospy.get_param('/tiago_grasp/segmentation_launch_file', None) if rospy.get_param('/tiago_grasp/as_node') else None # if the code is not run 'as_node', force to False
+        score_detection_threshold = 'detection_score_threshold:=0.25' if self.simulation else 'detection_score_threshold:=0.6'
+        object_segmentation_launcher = roslauncher.roslaunch_from_file(segmentation_launch_file, [score_detection_threshold]) if segmentation_launch_file else None
+
+        # In case there is something attached from the previous execution
         self.scene.remove_attached_object(link = 'hand_grasping_frame')
         self.scene.remove_world_object('bottle')
         self.scene.remove_world_object('aruco')
 
-        # launch the nodes for vision (if needed)
-        segmentation_launch_file = rospy.get_param('/tiago_grasp/segmentation_launch_file', None) if rospy.get_param('/tiago_grasp/as_node') else None # if the code is not run 'as_node', force to False
-        score_detection_threshold = 'detection_score_threshold:=0.25' if self.simulation else 'detection_score_threshold:=0.75'
-        object_segmentation_launcher = roslauncher.roslaunch_from_file(segmentation_launch_file, [score_detection_threshold]) if segmentation_launch_file else None
+       
 
         print('Waiting')
         '''

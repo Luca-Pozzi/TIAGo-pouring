@@ -29,7 +29,7 @@
   <group if = "$(arg grasping_as_node)">
     <param name = "tiago_grasp/as_node" type = "bool" value = "true" />
     <!-- look for the object coordinates launch file -->
-    <param name = "tiago_grasp/segmentation_launch_file" type = "str" value = "$(find segmentation)/launch/rgbd_segmentation.launch" />
+    <param name = "tiago_grasp/segmentation_launch_file" type = "str" value = "$(find segmentation)/launch/rgbd_segmentation_light.launch" /> <!--rgbd_segmentation.launch -->
     <!-- look for the ArUco detection launch file -->
     <!--<param name = "tiago_grasp/aruco_launch_file" type = "str" value = "$(find tiago_aruco_demo)/launch/detector.launch" />-->
     <!-- launch the node that actually makes the robot move -->
